@@ -5,15 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>S Браузер: проверка прокси и приватность</title>
 <meta name="description" content="S Браузер: сам находит живые прокси, бережёт приватность, весит 3,4 МБ. Скачать APK для Android 7.0 и новее.">
+<meta name="theme-color" content="#FC3F1D" media="(prefers-color-scheme:light)">
+<meta name="theme-color" content="#101216" media="(prefers-color-scheme:dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="S Браузер: проверка прокси и приватность">
+<meta property="og:description" content="Сам находит живые прокси, бережёт приватность, весит 3,4 МБ. APK для Android 7.0 и новее.">
+<meta property="og:url" content="https://tojikontvru.github.io/s-browser-site/">
+<meta name="twitter:card" content="summary">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FC3F1D'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='36' font-weight='bold' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
 <style>
 :root{
-  --brand:#FC3F1D; --brand-dark:#E0300F; --on-brand:#fff;
+  /* --brand это идентичность: знак, крупный текст. --brand-fill это заливка под мелким текстом и
+     белым текстом, поэтому она темнее: 5,2:1 против 3,6:1 у яркой. */
+  --brand:#FC3F1D; --brand-dark:#E0300F;
+  --brand-fill:#D02B0B; --brand-fill-hover:#B62A0B; --on-fill:#FFFFFF;
   --bg:#FFFFFF; --bg-soft:#F4F5F8; --text:#14161A; --muted:#62666F;
   --line:#E4E6EC; --card:#F4F5F8;
 }
 @media (prefers-color-scheme:dark){:root{
-  --brand:#FF5C3A; --on-brand:#2A0B02;
+  --brand:#FF5C3A; --brand-fill:#FF5C3A; --brand-fill-hover:#FF7A5E; --on-fill:#2A0B02;
   --bg:#101216; --bg-soft:#0A0B0E; --text:#E9EBF0; --muted:#9BA1AC;
   --line:#2A2E36; --card:#1A1D23;
 }}
@@ -31,46 +41,48 @@ header{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 88%,transpar
 .logo{display:inline-flex;align-items:center;gap:.6rem;font-weight:700;text-decoration:none}
 .logo .mark{width:2rem;height:2rem;border-radius:.55rem;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800}
 nav{margin-left:auto;display:flex;gap:.25rem}
-nav a{text-decoration:none;padding:.4rem .75rem;border-radius:.5rem;color:var(--muted);font-size:.92rem}
+nav a{display:inline-flex;align-items:center;min-height:2.75rem;text-decoration:none;padding:.4rem .75rem;border-radius:.5rem;color:var(--muted);font-size:.92rem}
 nav a:hover{background:var(--card);color:var(--text)}
-nav a.cta{background:var(--brand);color:#fff;font-weight:600}
-nav a.cta:hover{background:var(--brand-dark);color:#fff}
+nav a.cta{background:var(--brand-fill);color:var(--on-fill);font-weight:600}
+nav a.cta:hover{background:var(--brand-fill-hover);color:var(--on-fill)}
 @media(max-width:640px){nav a:not(.cta){display:none}}
 
 /* Герой */
 .hero{background:linear-gradient(180deg,var(--bg) 0%,var(--bg-soft) 100%);padding:4.5rem 0 3.5rem}
 .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center}
 @media(max-width:800px){.hero .wrap{grid-template-columns:1fr}}
-.pill{display:inline-flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:.3rem .9rem;font-size:.85rem;color:var(--muted)}
-.pill b{color:var(--brand)}
-h1{font-size:clamp(2rem,5vw,3rem);line-height:1.15;margin:.9rem 0 1rem;letter-spacing:-.02em}
+h1{font-size:clamp(2rem,5vw,3rem);line-height:1.15;margin:0 0 1rem;letter-spacing:-.02em}
 h1 span{color:var(--brand)}
 .lede{color:var(--muted);font-size:1.1rem;max-width:34rem}
 .actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.75rem}
 .btn{display:inline-flex;align-items:center;gap:.6rem;border-radius:.8rem;padding:.85rem 1.5rem;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--bg);transition:transform .15s ease,background .15s ease}
-.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
-html:has(.dark-brand) .btn.primary{color:var(--on-brand)}
+.btn.primary{background:var(--brand-fill);border-color:var(--brand-fill);color:var(--on-fill)}
 .btn:hover{transform:translateY(-2px)}
-.btn.primary:hover{background:var(--brand-dark)}
+.btn.primary:hover{background:var(--brand-fill-hover)}
 .meta{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin-top:1.25rem;color:var(--muted);font-size:.88rem}
 .meta b{color:var(--text);font-weight:600}
 
 /* Телефон */
 .phone{width:16.5rem;aspect-ratio:9/17;background:var(--card);border:1px solid var(--line);border-radius:2rem;padding:.9rem;margin:0 auto;box-shadow:0 24px 48px -24px rgb(0 0 0 / .35)}
-.screen{height:100%;border-radius:1.4rem;background:linear-gradient(180deg,var(--bg),var(--bg-soft));border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;position:relative;overflow:hidden}
-.screen .dot{position:absolute;top:.7rem;left:50%;transform:translateX(-50%);width:4.5rem;height:1rem;background:var(--bg);border-radius:999px;border:1px solid var(--line)}
-.slogo{width:4.5rem;height:4.5rem;border-radius:1.2rem;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:2.2rem;font-weight:800;animation:pop .6s ease both}
-@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
-.search{width:80%;height:2.6rem;border-radius:999px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;padding:0 1rem;color:var(--muted);font-size:.85rem;animation:pop .6s .1s ease both}
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;width:80%;animation:pop .6s .2s ease both}
-.tile{aspect-ratio:1;border-radius:1rem;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;font-weight:700;color:var(--muted)}
-@media (prefers-reduced-motion:reduce){.slogo,.search,.tiles{animation:none}}
+.screen{height:100%;border-radius:1.4rem;background:linear-gradient(180deg,var(--bg),var(--bg-soft));border:1px solid var(--line);display:flex;flex-direction:column;gap:1.1rem;padding:1.5rem .85rem;overflow:hidden}
+.search{height:2.4rem;border-radius:999px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;padding:0 .9rem;color:var(--muted);font-size:.78rem;animation:pop .5s ease both}
+.tablo{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem .4rem;animation:pop .5s .08s ease both}
+.site{display:flex;flex-direction:column;align-items:center;gap:.35rem}
+.site .ava{width:2.4rem;height:2.4rem;border-radius:1rem;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;font-size:.95rem;font-weight:700;color:var(--brand)}
+.site .lbl{font-size:.55rem;line-height:1.25;color:var(--muted);text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.site.add .ava{color:var(--muted);font-weight:600}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .search,.tablo{animation:none}
+  .card,.btn,.dl .btn{transition:none}
+  .card:hover,.btn:hover,.dl .btn:hover{transform:none}
+}
 
 /* Блоки */
 section{padding:3.5rem 0}
 section:nth-of-type(even){background:var(--bg-soft)}
-h2{font-size:1.75rem;letter-spacing:-.01em;margin-bottom:.6rem}
-.sub{color:var(--muted);max-width:38rem;margin-bottom:2rem}
+h2{font-size:1.75rem;letter-spacing:-.01em;margin-bottom:1.5rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
 .card{background:var(--card);border:1px solid var(--line);border-radius:1rem;padding:1.4rem;transition:transform .2s ease}
 .card:hover{transform:translateY(-4px)}
@@ -85,13 +97,13 @@ th{color:var(--muted);font-weight:600;font-size:.85rem}
 td b{font-weight:600}
 
 /* Скачивание */
-.dl{background:var(--brand);color:#fff;border-radius:1.5rem;padding:3rem 1.5rem;text-align:center}
-.dl h2{color:#fff}
-.dl p{opacity:.9;max-width:30rem;margin:.5rem auto 1.75rem}
+.dl{background:var(--brand-fill);color:var(--on-fill);border-radius:1.5rem;padding:3rem 1.5rem;text-align:center}
+.dl h2{color:var(--on-fill)}
+.dl p{max-width:30rem;margin:.5rem auto 1.75rem}
 .dl .btn{background:#fff;color:var(--brand-dark);border-color:#fff}
 .dl .btn:hover{transform:translateY(-2px)}
-.dl .fine{font-size:.8rem;opacity:.75;margin-top:1rem}
-.sha{display:inline-block;margin-top:1rem;font:12px/1.6 ui-monospace,monospace;background:rgb(255 255 255 / .14);border-radius:.5rem;padding:.4rem .8rem;max-width:100%;overflow:auto;white-space:nowrap}
+.dl .fine{font-size:.8rem;margin-top:1rem}
+.sha{display:inline-block;margin-top:1rem;font:12px/1.6 ui-monospace,monospace;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:.5rem;padding:.4rem .8rem;max-width:100%;overflow:auto;white-space:nowrap}
 
 /* Подвал */
 footer{border-top:1px solid var(--line);padding:2rem 0;color:var(--muted);font-size:.9rem}
@@ -119,7 +131,6 @@ footer a:hover{color:var(--text)}
   <div class="hero" id="top">
     <div class="wrap">
       <div>
-        <span class="pill">Версия <b>3.7</b> · обновлено 25 ноября 2026</span>
         <h1>Браузер, который <span>сам находит прокси</span></h1>
         <p class="lede">S Браузер проверяет тысячи адресов и выбирает живые, пропускает через них трафик и не собирает ничего о вас. Установка: один файл, без магазина и учётной записи.</p>
         <div class="actions">
@@ -132,14 +143,18 @@ footer a:hover{color:var(--text)}
           <span>Реклама и слежка: <b>нет</b></span>
         </div>
       </div>
-      <div class="phone" role="img" aria-label="Экран приложения: логотип, строка поиска, плитки сайтов">
+      <div class="phone" role="img" aria-label="Стартовый экран приложения: строка поиска и плитки сайтов с буквами в кружках: Safarali AI, Telegram, YouTube, Яндекс, Википедия, ВКонтакте, Одноклассники, Хабр">
         <div class="screen">
-          <span class="dot"></span>
-          <span class="slogo">S</span>
-          <div class="search">Поиск в интернете</div>
-          <div class="tiles">
-            <span class="tile">Y</span><span class="tile">G</span><span class="tile">W</span><span class="tile">+</span>
-            <span class="tile">D</span><span class="tile">T</span><span class="tile">R</span><span class="tile">+</span>
+          <div class="search">Поиск или адрес</div>
+          <div class="tablo">
+            <span class="site"><span class="ava">S</span><span class="lbl">Safarali AI</span></span>
+            <span class="site"><span class="ava">T</span><span class="lbl">Telegram</span></span>
+            <span class="site"><span class="ava">Y</span><span class="lbl">YouTube</span></span>
+            <span class="site"><span class="ava">Я</span><span class="lbl">Яндекс</span></span>
+            <span class="site"><span class="ava">В</span><span class="lbl">Википедия</span></span>
+            <span class="site"><span class="ava">В</span><span class="lbl">ВКонтакте</span></span>
+            <span class="site"><span class="ava">О</span><span class="lbl">Одноклассники</span></span>
+            <span class="site"><span class="ava">Х</span><span class="lbl">Хабр</span></span>
           </div>
         </div>
       </div>
@@ -163,17 +178,16 @@ footer a:hover{color:var(--text)}
   <section id="specs">
     <div class="wrap">
       <h2>Характеристики</h2>
-      <p class="sub">Данные совпадают с актуальной сборкой 3.7 (versionCode 26).</p>
       <table>
         <tbody>
-          <tr><th>Версия</th><td><b>3.7</b> (versionCode 26), 25 ноября 2026</td></tr>
-          <tr><th>Пакет</th><td><b>com.safarali.browser</b></td></tr>
-          <tr><th>Система</th><td>Android 7.0 и новее, целевая платформа Android 16</td></tr>
-          <tr><th>Размер</th><td>около 3,4 МБ</td></tr>
-          <tr><th>Языки</th><td>русский, английский, таджикский, узбекский</td></tr>
-          <tr><th>Поисковики</th><td>DuckDuckGo (по умолчанию), Google, Яндекс</td></tr>
-          <tr><th>Разрешения</th><td>сеть, камера и микрофон для сайтов, местоположение, запись файлов до Android 9</td></tr>
-          <tr><th>Реклама и аналитика</th><td><b>нет</b>, ни одной библиотеки слежки</td></tr>
+          <tr><th scope="row">Версия</th><td><b>3.7</b> (versionCode 26), 25 ноября 2026</td></tr>
+          <tr><th scope="row">Пакет</th><td><b>com.safarali.browser</b></td></tr>
+          <tr><th scope="row">Система</th><td>Android 7.0 и новее, целевая платформа Android 16</td></tr>
+          <tr><th scope="row">Размер</th><td>около 3,4 МБ</td></tr>
+          <tr><th scope="row">Языки</th><td>русский, английский, таджикский, узбекский</td></tr>
+          <tr><th scope="row">Поисковики</th><td>DuckDuckGo (по умолчанию), Google, Яндекс</td></tr>
+          <tr><th scope="row">Разрешения</th><td>сеть, камера и микрофон для сайтов, местоположение, запись файлов до Android 9</td></tr>
+          <tr><th scope="row">Реклама и аналитика</th><td><b>нет</b>, ни одной библиотеки слежки</td></tr>
         </tbody>
       </table>
     </div>
@@ -182,7 +196,6 @@ footer a:hover{color:var(--text)}
   <section id="privacy">
     <div class="wrap">
       <h2>Приватность</h2>
-      <p class="sub">Приложение не собирает данные: нет аналитики, рекламы и отчётов о сбоях.</p>
       <div class="grid">
         <div class="card"><h3>Без учётных записей</h3><p>Регистрации нет, собирать нечего: нет аналитики, рекламы и отчётов о сбоях.</p></div>
         <div class="card"><h3>Данные не покидают телефон</h3><p>Закладки, история и настройки хранятся только на устройстве. Резервное копирование Android отключено.</p></div>
@@ -215,7 +228,7 @@ footer a:hover{color:var(--text)}
     <span>
       <a href="https://tojikontvru.github.io/s-browser-legal/privacy.html">Политика</a> ·
       <a href="https://tojikontvru.github.io/s-browser-legal/terms.html">Условия</a> ·
-      <a href="https://t.me/">Обратная связь в Telegram</a>
+      <a href="https://t.me/Safaraligroup">Обратная связь в Telegram</a>
     </span>
   </div>
 </footer>
