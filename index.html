@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S Браузер — быстрый браузер с автоматическим прокси</title>
+<meta name="description" content="S Браузер: сам находит живые прокси, бережёт приватность, весит 3,4 МБ. Скачать APK для Android 7.0 и новее.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23FC3F1D'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='36' font-weight='bold' fill='white' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --brand:#FC3F1D; --brand-dark:#E0300F; --on-brand:#fff;
+  --bg:#FFFFFF; --bg-soft:#F4F5F8; --text:#14161A; --muted:#62666F;
+  --line:#E4E6EC; --card:#F4F5F8;
+}
+@media (prefers-color-scheme:dark){:root{
+  --brand:#FF5C3A; --on-brand:#2A0B02;
+  --bg:#101216; --bg-soft:#0A0B0E; --text:#E9EBF0; --muted:#9BA1AC;
+  --line:#2A2E36; --card:#1A1D23;
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:60rem;margin:0 auto;padding:0 1.25rem}
+a{color:inherit}
+.skip{position:absolute;left:-999px}
+.skip:focus{left:1rem;top:1rem;background:var(--brand);color:#fff;padding:.5rem 1rem;border-radius:.5rem;z-index:9}
+
+/* Шапка */
+header{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:5}
+.bar{display:flex;align-items:center;gap:1rem;height:3.5rem}
+.logo{display:inline-flex;align-items:center;gap:.6rem;font-weight:700;text-decoration:none}
+.logo .mark{width:2rem;height:2rem;border-radius:.55rem;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800}
+nav{margin-left:auto;display:flex;gap:.25rem}
+nav a{text-decoration:none;padding:.4rem .75rem;border-radius:.5rem;color:var(--muted);font-size:.92rem}
+nav a:hover{background:var(--card);color:var(--text)}
+nav a.cta{background:var(--brand);color:#fff;font-weight:600}
+nav a.cta:hover{background:var(--brand-dark);color:#fff}
+@media(max-width:640px){nav a:not(.cta){display:none}}
+
+/* Герой */
+.hero{background:linear-gradient(180deg,var(--bg) 0%,var(--bg-soft) 100%);padding:4.5rem 0 3.5rem}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center}
+@media(max-width:800px){.hero .wrap{grid-template-columns:1fr}}
+.pill{display:inline-flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:.3rem .9rem;font-size:.85rem;color:var(--muted)}
+.pill b{color:var(--brand)}
+h1{font-size:clamp(2rem,5vw,3rem);line-height:1.15;margin:.9rem 0 1rem;letter-spacing:-.02em}
+h1 span{color:var(--brand)}
+.lede{color:var(--muted);font-size:1.1rem;max-width:34rem}
+.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.75rem}
+.btn{display:inline-flex;align-items:center;gap:.6rem;border-radius:.8rem;padding:.85rem 1.5rem;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--bg);transition:transform .15s ease,background .15s ease}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+html:has(.dark-brand) .btn.primary{color:var(--on-brand)}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary:hover{background:var(--brand-dark)}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin-top:1.25rem;color:var(--muted);font-size:.88rem}
+.meta b{color:var(--text);font-weight:600}
+
+/* Телефон */
+.phone{width:16.5rem;aspect-ratio:9/17;background:var(--card);border:1px solid var(--line);border-radius:2rem;padding:.9rem;margin:0 auto;box-shadow:0 24px 48px -24px rgb(0 0 0 / .35)}
+.screen{height:100%;border-radius:1.4rem;background:linear-gradient(180deg,var(--bg),var(--bg-soft));border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;position:relative;overflow:hidden}
+.screen .dot{position:absolute;top:.7rem;left:50%;transform:translateX(-50%);width:4.5rem;height:1rem;background:var(--bg);border-radius:999px;border:1px solid var(--line)}
+.slogo{width:4.5rem;height:4.5rem;border-radius:1.2rem;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:2.2rem;font-weight:800;animation:pop .6s ease both}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.search{width:80%;height:2.6rem;border-radius:999px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;padding:0 1rem;color:var(--muted);font-size:.85rem;animation:pop .6s .1s ease both}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;width:80%;animation:pop .6s .2s ease both}
+.tile{aspect-ratio:1;border-radius:1rem;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;font-weight:700;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.slogo,.search,.tiles{animation:none}}
+
+/* Блоки */
+section{padding:3.5rem 0}
+section:nth-of-type(even){background:var(--bg-soft)}
+h2{font-size:1.75rem;letter-spacing:-.01em;margin-bottom:.6rem}
+.sub{color:var(--muted);max-width:38rem;margin-bottom:2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:1rem;padding:1.4rem;transition:transform .2s ease}
+.card:hover{transform:translateY(-4px)}
+.card .ico{width:2.6rem;height:2.6rem;border-radius:.8rem;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:1.2rem;margin-bottom:.9rem}
+.card h3{font-size:1.05rem;margin-bottom:.35rem}
+.card p{color:var(--muted);font-size:.93rem}
+
+/* Таблица */
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:1rem;overflow:hidden}
+th,td{text-align:left;padding:.8rem 1.1rem;border-bottom:1px solid var(--line);font-size:.95rem}
+tr:last-child td{border-bottom:0}
+th{color:var(--muted);font-weight:600;font-size:.85rem}
+td b{font-weight:600}
+
+/* Скачивание */
+.dl{background:var(--brand);color:#fff;border-radius:1.5rem;padding:3rem 1.5rem;text-align:center}
+.dl h2{color:#fff}
+.dl p{opacity:.9;max-width:30rem;margin:.5rem auto 1.75rem}
+.dl .btn{background:#fff;color:var(--brand-dark);border-color:#fff}
+.dl .btn:hover{transform:translateY(-2px)}
+.dl .fine{font-size:.8rem;opacity:.75;margin-top:1rem}
+.sha{display:inline-block;margin-top:1rem;font:12px/1.6 ui-monospace,monospace;background:rgb(255 255 255 / .14);border-radius:.5rem;padding:.4rem .8rem;max-width:100%;overflow:auto;white-space:nowrap}
+
+/* Подвал */
+footer{border-top:1px solid var(--line);padding:2rem 0;color:var(--muted);font-size:.9rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--text)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">К содержанию</a>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top"><span class="mark">S</span>S Браузер</a>
+    <nav aria-label="Разделы">
+      <a href="#features">Возможности</a>
+      <a href="#specs">Характеристики</a>
+      <a href="#privacy">Приватность</a>
+      <a class="cta" href="#download">Скачать</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <span class="pill">Версия <b>3.2</b> · обновлено 25 ноября 2026</span>
+        <h1>Браузер, который <span>сам находит прокси</span></h1>
+        <p class="lede">S Браузер проверяет тысячи адресов и выбирает живые, пропускает через них трафик и не собирает ничего о вас. Установка — один файл, без магазинов и аккаунтов.</p>
+        <div class="actions">
+          <a class="btn primary" href="#download">Скачать APK · 3,4 МБ</a>
+          <a class="btn" href="#features">Что внутри</a>
+        </div>
+        <div class="meta">
+          <span>Android <b>7.0+</b></span>
+          <span>Языки: <b>русский, английский, таджикский, узбекский</b></span>
+          <span>Реклама и слежка: <b>нет</b></span>
+        </div>
+      </div>
+      <div class="phone" role="img" aria-label="Экран приложения: логотип, строка поиска, плитки сайтов">
+        <div class="screen">
+          <span class="dot"></span>
+          <span class="slogo">S</span>
+          <div class="search">Поиск в интернете</div>
+          <div class="tiles">
+            <span class="tile">Y</span><span class="tile">G</span><span class="tile">W</span><span class="tile">+</span>
+            <span class="tile">D</span><span class="tile">T</span><span class="tile">R</span><span class="tile">+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Возможности</h2>
+      <p class="sub">Всё, что делает приложение, и ничего сверх этого.</p>
+      <div class="grid">
+        <div class="card"><div class="ico">⚡</div><h3>Автопоиск прокси</h3><p>Приложение собирает адреса из открытых источников и проверяет каждый: соединение, шифрование, реальный ответ сайта и скорость передачи. Живыми остаются только те, что действительно открывают страницы.</p></div>
+        <div class="card"><div class="ico">🔒</div><h3>Банковские сайты напрямую</h3><p>Банки и почтовые сервисы можно исключить из прокси — они открываются по вашему соединению, где это надёжнее.</p></div>
+        <div class="card"><div class="ico">🕶</div><h3>Приватные вкладки</h3><p>История, куки и данные форм приватных вкладок не пишутся на диск, а при закрытии стираются совсем.</p></div>
+        <div class="card"><div class="ico">📋</div><h3>Табло быстрого доступа</h3><p>Стартовая страница с крупной строкой поиска и плитками любимых сайтов: закрепляйте свои, остальные подбираются по частоте посещений.</p></div>
+        <div class="card"><div class="ico">📥</div><h3>Загрузки с ходом скачивания</h3><p>Файлы скачивает система: видно тип, состояние и полосу хода с процентом. Готовые открываются в пару касаний.</p></div>
+        <div class="card"><div class="ico">🔑</div><h3>Ключи MTProto</h3><p>Ссылки для Telegram хранятся отдельно от браузера и всегда под рукой.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="specs">
+    <div class="wrap">
+      <h2>Характеристики</h2>
+      <p class="sub">Данные совпадают с актуальной сборкой 3.2 (versionCode 21).</p>
+      <table>
+        <tbody>
+          <tr><th>Версия</th><td><b>3.2</b> (versionCode 21), 25 ноября 2026</td></tr>
+          <tr><th>Пакет</th><td><b>com.safarali.browser</b></td></tr>
+          <tr><th>Система</th><td>Android 7.0 и новее, целевая платформа Android 15</td></tr>
+          <tr><th>Размер</th><td>около 3,4 МБ</td></tr>
+          <tr><th>Языки</th><td>русский, английский, таджикский, узбекский</td></tr>
+          <tr><th>Поисковики</th><td>DuckDuckGo (по умолчанию), Google, Яндекс</td></tr>
+          <tr><th>Разрешения</th><td>сеть, камера и микрофон для сайтов, местоположение, запись файлов до Android 9</td></tr>
+          <tr><th>Реклама и аналитика</th><td><b>нет</b> — ни одной библиотеки слежки</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <h2>Приватность</h2>
+      <p class="sub">Коротко: приложение не знает о вас ничего, что не понадобилось бы для работы.</p>
+      <div class="grid">
+        <div class="card"><h3>Без учётных записей</h3><p>Регистрации нет, собирать нечего: нет аналитики, рекламы и отчётов о сбоях.</p></div>
+        <div class="card"><h3>Данные не покидают телефон</h3><p>Закладки, история и настройки хранятся только на устройстве. Резервное копирование Android отключено.</p></div>
+        <div class="card"><h3>Документы на 4 языках</h3><p>Политика конфиденциальности и условия пользования — на русском, английском, таджикском и узбекском.</p></div>
+      </div>
+      <div class="actions">
+        <a class="btn" href="https://tojikontvru.github.io/s-browser-legal/privacy.html">Политика конфиденциальности</a>
+        <a class="btn" href="https://tojikontvru.github.io/s-browser-legal/terms.html">Условия пользования</a>
+        <a class="btn" href="https://tojikontvru.github.io/s-browser-legal/">Все языки</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="download">
+    <div class="wrap">
+      <div class="dl">
+        <h2>Скачать S Браузер 3.2</h2>
+        <p>Один APK-файл. Разрешите установку из источников, отличных от магазина, и откройте файл.</p>
+        <a class="btn" href="S-Browser-3.2.apk" download>Скачать APK · 3,4 МБ</a>
+        <div class="fine">Android 7.0 и новее · подписано ключом Safarali Group</div>
+        <span class="sha">SHA-256: 23537eb64108ae7a1afa11e445ddc09560dd6e001b604c097a0164f44cb1cda8</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Safarali Group · S Браузер 3.2</span>
+    <span>
+      <a href="https://tojikontvru.github.io/s-browser-legal/privacy.html">Политика</a> ·
+      <a href="https://tojikontvru.github.io/s-browser-legal/terms.html">Условия</a> ·
+      <a href="https://t.me/">Обратная связь в Telegram</a>
+    </span>
+  </div>
+</footer>
+</body>
+</html>
